@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 int main(){
     int i = 1;
@@ -21,8 +22,8 @@ int main(){
             decimal_number = decimal_number/ 2;
             
         } while (decimal_number > 0);
-        
-        std::cout << binary_number << std::endl;
+        std::reverse(binary_number.begin(), binary_number.end());
+        std::cout << binary_number;
 
         std::cout << "\nAnother op?\n1) yes\n2) no\n> ";
         std::cin >> i;

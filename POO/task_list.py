@@ -7,6 +7,7 @@ Basic practice.
 # Import os to work with files 
 import os
 
+# We create a function to 
 def create_file():
     if not os.path.exists("tasklist.txt"):
             task = input("\nEnter first task: ")

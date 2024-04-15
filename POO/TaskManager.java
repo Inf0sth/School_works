@@ -4,19 +4,23 @@
 // Delete a task by id
 // Mark a task as completed (true) or incompleted (false)
 // Order the task by date asc or desc, and by priority
+import java.sql.*;
+import java.util.Map;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.sql.ResultSet;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.sql.*;
 
 public class TaskManager {
+    private static Connection conn;
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        connectToDatabase();
         Scanner scanner = new Scanner(System.in);
         int x = 1;
 
@@ -54,7 +58,17 @@ public class TaskManager {
         scanner.close();
     }
 
+    private static void connectToDatabase() {
+        try {
+            conn = DriverManager.getConnection("tasks.db");
+            System.out.println("Connected to SQLite database.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void addTask() {
+        connectToDatabase();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter task name:");
@@ -80,15 +94,6 @@ public class TaskManager {
 
         System.out.println("Task added successfully!!");
         scanner.close();
-    }
-
-    private static void connectToDatabase() {
-        try {
-            conn = DriverManager.getConnection("tasks.db");
-            System.out.println("Connected to SQLite database.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private static void storeTaskInDatabase(Map<String, Object> taskMap) {

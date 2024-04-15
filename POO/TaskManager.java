@@ -4,7 +4,6 @@
 // Delete a task by id
 // Mark a task as completed (true) or incompleted (false)
 // Order the task by date asc or desc, and by priority
-import java.sql.*;
 import java.util.Map;
 import java.util.Date;
 import java.util.Scanner;

@@ -4,18 +4,14 @@
 // Delete a task by id
 // Mark a task as completed (true) or incompleted (false)
 // Order the task by date asc or desc, and by priority
-import java.io.File;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Collections;
-import java.text.SimpleDateFormat;
 import java.sql.*;
 
 public class TaskManager {
@@ -210,9 +206,7 @@ public class TaskManager {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            String jsonContent = FileReader.readFile("Tasks_todo.json");
-
-            JSONArray jsonArray = (JSONArray) new JSONParser().parse(jsonContent);
+            connectToDatabase();
 
             System.out.println("Select order:");
             System.out.println("1) Ascending date");
@@ -221,67 +215,44 @@ public class TaskManager {
             System.out.println("4) Low priority first");
             int orderOption = scanner.nextInt();
 
+            String sql = "";
             switch (orderOption) {
                 case 1:
-                    Collections.sort(jsonArray, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(JSONObject task1, JSONObject task2) {
-                            return ((String) task1.get("date")).compareTo((String) task2.get("date"));
-                        }
-                    });
+                    sql = "SELECT * FROM tasks ORDER BY date ASC";
                     break;
                 case 2:
-                    Collections.sort(jsonArray, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(JSONObject task1, JSONObject task2) {
-                            return ((String) task2.get("date")).compareTo((String) task1.get("date"));
-                        }
-                    });
+                    sql = "SELECT * FROM tasks ORDER BY date DESC";
                     break;
                 case 3:
-                    Collections.sort(jsonArray, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(JSONObject task1, JSONObject task2) {
-                            return getPriorityValue((String) task2.get("priority")) - getPriorityValue((String) task1.get("priority"));
-                        }
-                    });
+                    sql = "SELECT * FROM tasks ORDER BY CASE priority WHEN 'H' THEN 3 WHEN 'I' THEN 2 WHEN 'L' THEN 1 ELSE 0 END DESC";
                     break;
                 case 4:
-                    Collections.sort(jsonArray, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(JSONObject task1, JSONObject task2) {
-                            return getPriorityValue((String) task1.get("priority")) - getPriorityValue((String) task2.get("priority"));
-                        }
-                    });
+                    sql = "SELECT * FROM tasks ORDER BY CASE priority WHEN 'H' THEN 3 WHEN 'I' THEN 2 WHEN 'L' THEN 1 ELSE 0 END ASC";
                     break;
                 default:
                     System.out.println("Invalid option");
                     return;
             }
 
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
             System.out.println("Tasks:");
-            for (Object obj : jsonArray) {
-                JSONObject task = (JSONObject) obj;
-                System.out.println("ID: " + task.get("id") + ", Name: " + task.get("name") + ", Date: "
-                        + task.get("date") + ", Priority: " + task.get("priority"));
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name") + ", Date: "
+                        + rs.getString("date") + ", Priority: " + rs.getString("priority"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             scanner.close();
-        }
-    }
-
-    private static int getPriorityValue(String priority) {
-        switch (priority) {
-            case "H":
-                return 3;
-            case "I":
-                return 2;
-            case "L":
-                return 1;
-            default:
-                return 0;
         }
     }
 }

@@ -15,10 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
-import org.json.simple.JSONArray;
 import java.text.SimpleDateFormat;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import java.sql.*;
 
 public class TaskManager {
 
@@ -63,13 +61,6 @@ public class TaskManager {
     private static void addTask() {
         Scanner scanner = new Scanner(System.in);
 
-        
-        File file = new File("Tasks_todo.json");
-        if (!file.exists()) {
-            createEmptyJSONFile(); 
-        }
-
-        
         System.out.println("Enter task name:");
         String taskName = scanner.nextLine();
         System.out.println("Enter task details:");
@@ -89,42 +80,43 @@ public class TaskManager {
         taskMap.put("completed", false);
         taskMap.put("priority", taskPriority);
 
-        storeTaskInJSON(taskMap);
+        storeTaskInDatabase(taskMap);
 
         System.out.println("Task added successfully!!");
         scanner.close();
     }
 
-    private static void createEmptyJSONFile() {
+    private static void connectToDatabase() {
         try {
-            FileWriter writer = new FileWriter("Tasks_todo.json");
-            writer.write("[]");
-            writer.close();
-        } catch (IOException e) {
+            conn = DriverManager.getConnection("tasks.db");
+            System.out.println("Connected to SQLite database.");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private static void storeTaskInJSON(Map<String, Object> taskMap) {
+    private static void storeTaskInDatabase(Map<String, Object> taskMap) {
         try {
-            String jsonContent = FileReader.readFile("Tasks_todo.json");
-
-            JSONArray jsonArray;
-            if (jsonContent.isEmpty()) {
-                jsonArray = new JSONArray();
-            } else {
-                jsonArray = (JSONArray) JSONArray.parse(jsonContent);
-            }
-
-            JSONObject jsonTask = new JSONObject(taskMap);
-
-            jsonArray.add(jsonTask);
-
-            FileWriter writer = new FileWriter("Tasks_todo.json");
-            writer.write(jsonArray.toJSONString());
-            writer.close();
-        } catch (IOException e) {
+            String sql = "INSERT INTO tasks (id, name, date, details, completed, priority) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, (int) taskMap.get("id"));
+            pstmt.setString(2, (String) taskMap.get("name"));
+            pstmt.setString(3, taskMap.get("date").toString());
+            pstmt.setString(4, (String) taskMap.get("details"));
+            pstmt.setBoolean(5, (boolean) taskMap.get("completed"));
+            pstmt.setString(6, (String) taskMap.get("priority"));
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            scanner.close();
         }
     }
 
@@ -132,43 +124,40 @@ public class TaskManager {
         Scanner scanner = new Scanner(System.in);
 
         try {
+            connectToDatabase();
 
-            String jsonContent = FileReader.readFile("Tasks_todo.json");
-
-            JSONArray jsonArray = (JSONArray) new JSONParser().parse(jsonContent);
+            String sql = "SELECT id, name FROM tasks";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
 
             System.out.println("Tasks:");
-            for (Object obj : jsonArray) {
-                JSONObject task = (JSONObject) obj;
-                System.out.println("ID: " + task.get("id") + ", Name: " + task.get("name"));
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name"));
             }
 
             System.out.println("Enter the ID of the task to delete:");
             int taskIdToDelete = scanner.nextInt();
 
-            JSONArray updatedArray = new JSONArray();
-            boolean taskFound = false;
-            for (Object obj : jsonArray) {
-                JSONObject task = (JSONObject) obj;
-                int taskId = ((Long) task.get("id")).intValue();
-                if (taskId == taskIdToDelete) {
-                    taskFound = true;
-                } else {
-                    updatedArray.add(task);
-                }
-            }
+            sql = "DELETE FROM tasks WHERE id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, taskIdToDelete);
+            int rowsAffected = pstmt.executeUpdate();
 
-            if (taskFound) {
-                FileWriter writer = new FileWriter("Tasks_todo.json");
-                writer.write(updatedArray.toJSONString());
-                writer.close();
+            if (rowsAffected > 0) {
                 System.out.println("Task with ID " + taskIdToDelete + " has been deleted.");
             } else {
                 System.out.println("Task with ID " + taskIdToDelete + " not found.");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             scanner.close();
         }
     }
@@ -177,43 +166,42 @@ public class TaskManager {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            String jsonContent = FileReader.readFile("Tasks_todo.json");
+            connectToDatabase();
 
-            JSONArray jsonArray = (JSONArray) new JSONParser().parse(jsonContent);
+            String sql = "SELECT id, name, completed FROM tasks";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
 
             System.out.println("Tasks:");
-            for (Object obj : jsonArray) {
-                JSONObject task = (JSONObject) obj;
-                System.out.println("ID: " + task.get("id") + ", Name: " + task.get("name") + ", Completed: "
-                        + task.get("completed"));
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name") + ", Completed: "
+                        + rs.getBoolean("completed"));
             }
-
 
             System.out.println("Enter the ID of the task to mark as completed:");
             int taskIdToComplete = scanner.nextInt();
 
-            boolean taskFound = false;
-            for (Object obj : jsonArray) {
-                JSONObject task = (JSONObject) obj;
-                int taskId = ((Long) task.get("id")).intValue();
-                if (taskId == taskIdToComplete) {
-                    task.put("completed", true);
-                    taskFound = true;
-                    break;
-                }
-            }
+            sql = "UPDATE tasks SET completed = ? WHERE id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setBoolean(1, true);
+            pstmt.setInt(2, taskIdToComplete);
+            int rowsAffected = pstmt.executeUpdate();
 
-            if (taskFound) {
-                FileWriter writer = new FileWriter("Tasks_todo.json");
-                writer.write(jsonArray.toJSONString());
-                writer.close();
+            if (rowsAffected > 0) {
                 System.out.println("Task with ID " + taskIdToComplete + " has been marked as completed.");
             } else {
                 System.out.println("Task with ID " + taskIdToComplete + " not found.");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             scanner.close();
         }
     }

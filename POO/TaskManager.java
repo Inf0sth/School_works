@@ -32,7 +32,7 @@ public class TaskManager {
             System.out.println("2) Delete a task");
             System.out.println("3) Mark task as completed");
             System.out.println("4) See tasks");
-            int option = scanner.nextInt(); // Solicitar una opción al usuario para proceder con el programa
+            int option = scanner.nextInt();
             
             switch (option) {
                 case 1:
@@ -50,7 +50,7 @@ public class TaskManager {
                 default:
                     System.out.println("Invalid option");
             }
-            // Decidir si el programa continúa ejecutándose o no, según la decisión del usuario
+            
             System.out.println("\nAnother operation?");
             System.out.println("1) SÍ");
             System.out.println("2) NO");
@@ -63,13 +63,13 @@ public class TaskManager {
     private static void addTask() {
         Scanner scanner = new Scanner(System.in);
 
-        // Verificar si el archivo JSON existe
+        
         File file = new File("Tasks_todo.json");
         if (!file.exists()) {
-            createEmptyJSONFile(); // Si no existe, crear un archivo JSON vacío
+            createEmptyJSONFile(); 
         }
 
-        // Solicitar datos para la nueva tarea
+        
         System.out.println("Enter task name:");
         String taskName = scanner.nextLine();
         System.out.println("Enter task details:");
@@ -77,14 +77,10 @@ public class TaskManager {
         System.out.println("Enter task priority (H,I,L):");
         String taskPriority = scanner.nextLine();
 
-        // Generar ID único para la tarea
         int taskId = (int) (Math.random() * 1000);
 
-        // Obtener la fecha actual
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date creationDate = new Date();
 
-        // Crear un mapa para almacenar la información de la tarea
         Map<String, Object> taskMap = new HashMap<>();
         taskMap.put("id", taskId);
         taskMap.put("name", taskName);
@@ -111,24 +107,19 @@ public class TaskManager {
 
     private static void storeTaskInJSON(Map<String, Object> taskMap) {
         try {
-            // Leer el contenido actual del archivo JSON
             String jsonContent = FileReader.readFile("Tasks_todo.json");
 
-            // Convertir el contenido JSON a un JSONArray
             JSONArray jsonArray;
             if (jsonContent.isEmpty()) {
-                jsonArray = new JSONArray(); // Si el archivo está vacío, crear un nuevo JSONArray
+                jsonArray = new JSONArray();
             } else {
                 jsonArray = (JSONArray) JSONArray.parse(jsonContent);
             }
 
-            // Convertir el mapa de la tarea a un JSONObject
             JSONObject jsonTask = new JSONObject(taskMap);
 
-            // Agregar el JSONObject al JSONArray
             jsonArray.add(jsonTask);
 
-            // Escribir el JSONArray actualizado en el archivo JSON
             FileWriter writer = new FileWriter("Tasks_todo.json");
             writer.write(jsonArray.toJSONString());
             writer.close();
@@ -141,24 +132,20 @@ public class TaskManager {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            // Leer el contenido actual del archivo JSON
+
             String jsonContent = FileReader.readFile("Tasks_todo.json");
 
-            // Convertir el contenido JSON a un JSONArray
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(jsonContent);
 
-            // Mostrar las tareas al usuario
             System.out.println("Tasks:");
             for (Object obj : jsonArray) {
                 JSONObject task = (JSONObject) obj;
                 System.out.println("ID: " + task.get("id") + ", Name: " + task.get("name"));
             }
 
-            // Solicitar al usuario el ID de la tarea a eliminar
             System.out.println("Enter the ID of the task to delete:");
             int taskIdToDelete = scanner.nextInt();
 
-            // Eliminar la tarea con el ID especificado
             JSONArray updatedArray = new JSONArray();
             boolean taskFound = false;
             for (Object obj : jsonArray) {
@@ -171,7 +158,6 @@ public class TaskManager {
                 }
             }
 
-            // Escribir el JSONArray actualizado en el archivo JSON
             if (taskFound) {
                 FileWriter writer = new FileWriter("Tasks_todo.json");
                 writer.write(updatedArray.toJSONString());
@@ -191,13 +177,10 @@ public class TaskManager {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            // Leer el contenido actual del archivo JSON
             String jsonContent = FileReader.readFile("Tasks_todo.json");
 
-            // Convertir el contenido JSON a un JSONArray
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(jsonContent);
 
-            // Mostrar las tareas al usuario
             System.out.println("Tasks:");
             for (Object obj : jsonArray) {
                 JSONObject task = (JSONObject) obj;
@@ -205,11 +188,10 @@ public class TaskManager {
                         + task.get("completed"));
             }
 
-            // Solicitar al usuario el ID de la tarea a marcar como completada
+
             System.out.println("Enter the ID of the task to mark as completed:");
             int taskIdToComplete = scanner.nextInt();
 
-            // Marcar la tarea con el ID especificado como completada
             boolean taskFound = false;
             for (Object obj : jsonArray) {
                 JSONObject task = (JSONObject) obj;
@@ -221,7 +203,6 @@ public class TaskManager {
                 }
             }
 
-            // Escribir el JSONArray actualizado en el archivo JSON
             if (taskFound) {
                 FileWriter writer = new FileWriter("Tasks_todo.json");
                 writer.write(jsonArray.toJSONString());
@@ -241,13 +222,10 @@ public class TaskManager {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            // Leer el contenido actual del archivo JSON
             String jsonContent = FileReader.readFile("Tasks_todo.json");
 
-            // Convertir el contenido JSON a un JSONArray
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(jsonContent);
 
-            // Mostrar menú de opciones al usuario
             System.out.println("Select order:");
             System.out.println("1) Ascending date");
             System.out.println("2) Descending date");
@@ -255,7 +233,6 @@ public class TaskManager {
             System.out.println("4) Low priority first");
             int orderOption = scanner.nextInt();
 
-            // Ordenar las tareas según la opción seleccionada por el usuario
             switch (orderOption) {
                 case 1:
                     Collections.sort(jsonArray, new Comparator<JSONObject>() {
@@ -294,7 +271,6 @@ public class TaskManager {
                     return;
             }
 
-            // Mostrar las tareas ordenadas
             System.out.println("Tasks:");
             for (Object obj : jsonArray) {
                 JSONObject task = (JSONObject) obj;

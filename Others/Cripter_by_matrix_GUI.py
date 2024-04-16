@@ -1,11 +1,12 @@
 """
 Proyecto: Cifrador y descifrador de palabras
+- Joel Araiza
 
 Conocimiento aplicado:
 Multiplicación de matrices
 Matrices transpuestas
 Determinantes de matrices de 2x2: para generar claves
-GUI
+GUI whit tkinter
 Raices cuadradas con metodos numericos
 Criptografia basica
 """

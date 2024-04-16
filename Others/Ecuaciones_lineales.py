@@ -14,5 +14,5 @@ for i in range(3):
 
 print("\n",matris_R)
 
-while matris_R[0][0] != 1 and matris_R[1][1] != 1 and matris_R[2][2] != 1:
+while (matris_R[0][0],matris_R[1][1],matris_R[2][2]) != 1:
     pass

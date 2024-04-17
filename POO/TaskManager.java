@@ -24,46 +24,37 @@ public class TaskManager {
             System.out.println("2) Delete a task");
             System.out.println("3) Mark task as completed");
             System.out.println("4) See tasks");
-            
-            // Verificar si hay más entradas disponibles antes de intentar leer un entero
-            if (scanner.hasNextInt()) {
-                int option = scanner.nextInt();
-                switch (option) {
-                    case 1:
-                        addTask();
-                        break;
-                    case 2:
-                        deleteTask();
-                        break;
-                    case 3:
-                        markTaskCompleted();
-                        break;
-                    case 4:
-                        seeTasks();
-                        break;
-                    default:
-                        System.out.println("Invalid option");
-                }
-            } else {
+            System.out.println("5) Close the program");
+
+            // Verificar si la entrada es un entero
+            while (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a valid option.");
                 scanner.next(); // Limpiar el buffer de entrada
             }
+            int option = scanner.nextInt();
             
-            System.out.println("\nAnother operation?");
-            System.out.println("1) SÍ");
-            System.out.println("2) NO");
-            
-            // Verificar si hay más entradas disponibles antes de intentar leer un entero
-            if (scanner.hasNextInt()) {
-                x = scanner.nextInt();
-            } else {
-                System.out.println("Invalid input. Please enter a valid option.");
-                scanner.next(); // Limpiar el buffer de entrada
+            switch (option) {
+                case 1:
+                    addTask();
+                    break;
+                case 2:
+                    deleteTask();
+                    break;
+                case 3:
+                    markTaskCompleted();
+                    break;
+                case 4:
+                    seeTasks();
+                    break;
+                case 5:
+                    System.out.println("Exiting the program...");
+                    return;
+                default:
+                    System.out.println("Invalid option");
             }
         }
         scanner.close();
     }
-
 
     private static void addTask() {
         Scanner scanner = new Scanner(System.in);
@@ -73,7 +64,7 @@ public class TaskManager {
         String taskDetails = scanner.nextLine();
         System.out.println("Enter task priority (H, I, L):");
         String taskPriority = scanner.nextLine();
-        System.out.println("Enter the date (DD/MM/AAAA):");
+        System.out.println("Enter the date (DD/MM/YYYY):");
         String creationDate = scanner.nextLine();
         int taskId = (int) (Math.random() * 1000);
         

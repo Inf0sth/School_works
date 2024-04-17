@@ -24,30 +24,46 @@ public class TaskManager {
             System.out.println("2) Delete a task");
             System.out.println("3) Mark task as completed");
             System.out.println("4) See tasks");
-            int option = scanner.nextInt();
-            switch (option) {
-                case 1:
-                    addTask();
-                    break;
-                case 2:
-                    deleteTask();
-                    break;
-                case 3:
-                    markTaskCompleted();
-                    break;
-                case 4:
-                    seeTasks();
-                    break;
-                default:
-                    System.out.println("Invalid option");
+            
+            // Verificar si hay más entradas disponibles antes de intentar leer un entero
+            if (scanner.hasNextInt()) {
+                int option = scanner.nextInt();
+                switch (option) {
+                    case 1:
+                        addTask();
+                        break;
+                    case 2:
+                        deleteTask();
+                        break;
+                    case 3:
+                        markTaskCompleted();
+                        break;
+                    case 4:
+                        seeTasks();
+                        break;
+                    default:
+                        System.out.println("Invalid option");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a valid option.");
+                scanner.next(); // Limpiar el buffer de entrada
             }
+            
             System.out.println("\nAnother operation?");
             System.out.println("1) SÍ");
             System.out.println("2) NO");
-            x = scanner.nextInt();
+            
+            // Verificar si hay más entradas disponibles antes de intentar leer un entero
+            if (scanner.hasNextInt()) {
+                x = scanner.nextInt();
+            } else {
+                System.out.println("Invalid input. Please enter a valid option.");
+                scanner.next(); // Limpiar el buffer de entrada
+            }
         }
         scanner.close();
     }
+
 
     private static void addTask() {
         Scanner scanner = new Scanner(System.in);

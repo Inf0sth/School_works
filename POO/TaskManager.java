@@ -1,23 +1,32 @@
-// Todo app
+/**
+ * Class: Object oriented programing
+ * Poroject: Tasklist
+ * Student: Joel Albert Araiza López
+ * Languaje: Java
+ */
+
+// Todo app:
 // Create a new task by addin: id, date, task name, 
 // task description, task state, priority
 // Delete a task by id
 // Mark a task as completed (true) or incompleted (false)
 // Order the task by date asc or desc, and by priority
+// Libraries:
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
-
+// Class task to manage the tasks
 class Task {
-    private int id;
+    private int id; 
     private String date;
     private String taskName;
     private String taskDescription;
     private boolean taskState;
     private int priority;
 
+    // Constructor to initialize the task
     public Task(int id, String date, String taskName, String taskDescription, boolean taskState, int priority) {
         this.id = id;
         this.date = date;
@@ -47,24 +56,30 @@ class Task {
         return priority;
     }
     
+    // Method to provide a string representation of the task
     @Override
     public String toString() {
         return "ID: " + id + ", Date: " + date + ", Task Name: " + taskName + ", Description: " + taskDescription +
                 ", State: " + taskState + ", Priority: " + priority;
     }
 
+    // Initialize the state of the task
     public void setTaskState(boolean taskState) {
         this.taskState = taskState;
     }
 }
 
+// Principal class
 public class TaskManager {
+    // Array to store the tasks
     private static ArrayList<Task> tasks = new ArrayList<>();
-    private static int taskIdCounter = 1;
+    // Initialize the counter for the id
+    private static int taskIdCounter = 100;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        // Menu for the user
         while (true) {
             System.out.println("\n--- Tasks Manager ---");
             System.out.println("1. Add task");
@@ -74,28 +89,29 @@ public class TaskManager {
             System.out.println("5. Show tasks");
             System.out.println("6. Exit");
             System.out.print("Select an option: ");
-
+            // Get the choice of the user from the CLI
             int choice = scanner.nextInt();
             scanner.nextLine();
 
+            // Check the choice and proced with the respective process
             switch (choice) {
                 case 1:
-                    addTask(scanner);
+                    addTask(scanner); // Add a task
                     break;
                 case 2:
-                    deleteTask(scanner);
+                    deleteTask(scanner); // Delete a task
                     break;
                 case 3:
-                    markTask(scanner);
+                    markTask(scanner); // Marks as complete or incomplete a task
                     break;
                 case 4:
-                    sortTasks(scanner);
+                    sortTasks(scanner); // Order the tasks
                     break;
                 case 5:
-                    showTasks();
+                    showTasks(); // Show the tasks
                     break;
                 case 6:
-                    System.out.println("¡Bye bye!");
+                    System.out.println("¡Bye bye!"); // Exit program
                     System.exit(0);
                     break;
                 default:
@@ -104,6 +120,7 @@ public class TaskManager {
         }
     }
 
+    // Function to add a task
     private static void addTask(Scanner scanner) {
         System.out.print("Enter the date (yyyy/mm/dd): ");
         String date = scanner.nextLine();
@@ -119,7 +136,7 @@ public class TaskManager {
         tasks.add(task);
         System.out.println("Task correctly added.");
     }
-
+    // Function to delete a task
     private static void deleteTask(Scanner scanner) {
         System.out.print("Enter the id of the task to delete: ");
         int taskId = scanner.nextInt();
@@ -134,7 +151,7 @@ public class TaskManager {
         }
         System.out.println("No task found with the given ID.");
     }
-
+    // Function to mark a task as complete or incomplete
     private static void markTask(Scanner scanner) {
         System.out.print("Enter the ID of the task to mark: ");
         int taskId = scanner.nextInt();
@@ -149,7 +166,7 @@ public class TaskManager {
         }
         System.out.println("No task found with the given ID");
     }
-
+    // Order the task by the user choice
     private static void sortTasks(Scanner scanner) {
         System.out.println("How do you want to organize tasks?");
         System.out.println("1. By ascending date");
@@ -178,7 +195,7 @@ public class TaskManager {
         }
         System.out.println("Tasks ordered correctly.");
     }
-
+    // Function to show the tasks
     private static void showTasks() {
         if (tasks.isEmpty()) {
             System.out.println("There are no tasks to show.");

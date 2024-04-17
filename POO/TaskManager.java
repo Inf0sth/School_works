@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
+
 class Task {
     private int id;
     private String date;
@@ -26,11 +27,32 @@ class Task {
         this.priority = priority;
     }
 
+    // Getter para el atributo id
+    public int getId() {
+        return id;
+    }
+
+    // Getter para el atributo date
+    public String getDate() {
+        return date;
+    }
+
+    // Getter para el atributo taskState
+    public boolean isTaskState() {
+        return taskState;
+    }
+
+    // Getter para el atributo priority
+    public int getPriority() {
+        return priority;
+    }
+    
     @Override
     public String toString() {
         return "ID: " + id + ", Date: " + date + ", Task Name: " + taskName + ", Description: " + taskDescription +
                 ", State: " + taskState + ", Priority: " + priority;
     }
+
 }
 
 public class TaskManager {
@@ -88,7 +110,7 @@ public class TaskManager {
         String taskDescription = scanner.nextLine();
         System.out.print("Ingrese la prioridad (1-3): ");
         int priority = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
 
         Task task = new Task(taskIdCounter++, date, taskName, taskDescription, false, priority);
         tasks.add(task);

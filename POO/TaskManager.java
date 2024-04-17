@@ -4,136 +4,164 @@
 // Delete a task by id
 // Mark a task as completed (true) or incompleted (false)
 // Order the task by date asc or desc, and by priority
-import java.util.Map;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+
+class Task {
+    private int id;
+    private String date;
+    private String taskName;
+    private String taskDescription;
+    private boolean taskState;
+    private int priority;
+
+    public Task(int id, String date, String taskName, String taskDescription, boolean taskState, int priority) {
+        this.id = id;
+        this.date = date;
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskState = taskState;
+        this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Date: " + date + ", Task Name: " + taskName + ", Description: " + taskDescription +
+                ", State: " + taskState + ", Priority: " + priority;
+    }
+}
 
 public class TaskManager {
-    private static Scanner scanner = new Scanner(System.in);
-    private static ArrayList<Map<String, Object>> tasks = new ArrayList<>();
+    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static int taskIdCounter = 1;
 
     public static void main(String[] args) {
-        int x = 1;
-        while (x == 1) {
-            System.out.println("\nSelect option:");
-            System.out.println("1) Add task");
-            System.out.println("2) Delete a task");
-            System.out.println("3) Mark task as completed");
-            System.out.println("4) See tasks");
-            System.out.println("5) Close the program");
+        Scanner scanner = new Scanner(System.in);
 
-            // Verificar si la entrada es un entero
-            while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid option.");
-                scanner.next(); // Limpiar el buffer de entrada
-            }
-            int option = scanner.nextInt();
-            
-            switch (option) {
+        while (true) {
+            System.out.println("\n--- TODO LIST ---");
+            System.out.println("1. Agregar tarea");
+            System.out.println("2. Borrar tarea por ID");
+            System.out.println("3. Marcar tarea como completada/incompleta");
+            System.out.println("4. Ordenar tareas");
+            System.out.println("5. Mostrar tareas");
+            System.out.println("6. Salir");
+            System.out.print("Elige una opción: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
                 case 1:
-                    addTask();
+                    addTask(scanner);
                     break;
                 case 2:
-                    deleteTask();
+                    deleteTask(scanner);
                     break;
                 case 3:
-                    markTaskCompleted();
+                    markTask(scanner);
                     break;
                 case 4:
-                    seeTasks();
+                    sortTasks(scanner);
                     break;
                 case 5:
-                    System.out.println("Exiting the program...");
-                    return;
+                    showTasks();
+                    break;
+                case 6:
+                    System.out.println("¡Hasta luego!");
+                    System.exit(0);
+                    break;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("Opción no válida. Inténtalo de nuevo.");
             }
         }
-        scanner.close();
     }
 
-    private static void addTask() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter task name:");
+    private static void addTask(Scanner scanner) {
+        System.out.print("Ingrese la fecha (dd/mm/yyyy): ");
+        String date = scanner.nextLine();
+        System.out.print("Ingrese el nombre de la tarea: ");
         String taskName = scanner.nextLine();
-        System.out.println("Enter task details:");
-        String taskDetails = scanner.nextLine();
-        System.out.println("Enter task priority (H, I, L):");
-        String taskPriority = scanner.nextLine();
-        System.out.println("Enter the date (DD/MM/YYYY):");
-        String creationDate = scanner.nextLine();
-        int taskId = (int) (Math.random() * 1000);
-        
-        Map<String, Object> taskMap = new HashMap<>();
-        taskMap.put("id", taskId);
-        taskMap.put("name", taskName);
-        taskMap.put("date", creationDate);
-        taskMap.put("details", taskDetails);
-        taskMap.put("completed", false);
-        taskMap.put("priority", taskPriority);
-        tasks.add(taskMap);
-        System.out.println("Task added successfully!!");
-        scanner.close();
+        System.out.print("Ingrese la descripción de la tarea: ");
+        String taskDescription = scanner.nextLine();
+        System.out.print("Ingrese la prioridad (1-3): ");
+        int priority = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        Task task = new Task(taskIdCounter++, date, taskName, taskDescription, false, priority);
+        tasks.add(task);
+        System.out.println("Tarea agregada correctamente.");
     }
 
-    private static void deleteTask() {
-        System.out.println("Enter the ID of the task to delete:");
-        int taskIdToDelete = scanner.nextInt();
-        for (Map<String, Object> task : tasks) {
-            if ((int) task.get("id") == taskIdToDelete) {
+    private static void deleteTask(Scanner scanner) {
+        System.out.print("Ingrese el ID de la tarea a borrar: ");
+        int taskId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        for (Task task : tasks) {
+            if (task.getId() == taskId) {
                 tasks.remove(task);
-                System.out.println("Task deleted successfully!!");
+                System.out.println("Tarea borrada correctamente.");
                 return;
             }
         }
-        System.out.println("Task not found!!");
+        System.out.println("No se encontró ninguna tarea con el ID proporcionado.");
     }
 
-    private static void markTaskCompleted() {
-        System.out.println("Enter the ID of the task to mark as completed:");
-        int taskIdToComplete = scanner.nextInt();
-        for (Map<String, Object> task : tasks) {
-            if ((int) task.get("id") == taskIdToComplete) {
-                task.put("completed", true);
-                System.out.println("Task marked as completed!!");
+    private static void markTask(Scanner scanner) {
+        System.out.print("Ingrese el ID de la tarea a marcar: ");
+        int taskId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        for (Task task : tasks) {
+            if (task.getId() == taskId) {
+                task.setTaskState(!task.isTaskState());
+                System.out.println("Tarea marcada correctamente.");
                 return;
             }
         }
-        System.out.println("Task not found!!");
+        System.out.println("No se encontró ninguna tarea con el ID proporcionado.");
     }
 
-    private static void seeTasks() {
-        System.out.println("Select order:");
-        System.out.println("1) Ascending date");
-        System.out.println("2) Descending date");
-        System.out.println("3) High priority first");
-        System.out.println("4) Low priority first");
-        int orderOption = scanner.nextInt();
-        ArrayList<Map<String, Object>> sortedTasks = new ArrayList<>(tasks);
-        switch (orderOption) {
+    private static void sortTasks(Scanner scanner) {
+        System.out.println("¿Cómo desea ordenar las tareas?");
+        System.out.println("1. Por fecha ascendente");
+        System.out.println("2. Por fecha descendente");
+        System.out.println("3. Por prioridad ascendente");
+        System.out.println("4. Por prioridad descendente");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        switch (choice) {
             case 1:
-                Collections.sort(sortedTasks, Comparator.comparing(task -> (Date) task.get("date")));
+                Collections.sort(tasks, Comparator.comparing(Task::getDate));
                 break;
             case 2:
-                Collections.sort(sortedTasks, (task1, task2) -> ((Date) task2.get("date")).compareTo((Date) task1.get("date")));
+                Collections.sort(tasks, Comparator.comparing(Task::getDate).reversed());
                 break;
             case 3:
-                Collections.sort(sortedTasks, (task1, task2) -> task2.get("priority").toString().compareTo(task1.get("priority").toString()));
+                Collections.sort(tasks, Comparator.comparingInt(Task::getPriority));
                 break;
             case 4:
-                Collections.sort(sortedTasks, Comparator.comparing(task -> task.get("priority").toString()));
+                Collections.sort(tasks, Comparator.comparingInt(Task::getPriority).reversed());
                 break;
             default:
-                System.out.println("Invalid option");
+                System.out.println("Opción no válida.");
                 return;
         }
-        System.out.println("Tasks:");
-        for (Map<String, Object> task : sortedTasks) {
-            System.out.println("ID: " + task.get("id") + ", Name: " + task.get("name") + ", Date: " + task.get("date") + ", Priority: " + task.get("priority") + ", Completed: " + task.get("completed"));
+        System.out.println("Tareas ordenadas correctamente.");
+    }
+
+    private static void showTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println("No hay tareas para mostrar.");
+            return;
+        }
+        System.out.println("--- TAREAS ---");
+        for (Task task : tasks) {
+            System.out.println(task);
         }
     }
 }

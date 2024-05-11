@@ -4,24 +4,25 @@
 int main(){
 	std::string user;
 	int option;
-	int filecount;
 	std::string directory;
-	std::cout << "Enter user\n";
+	std::cout << "Enter user: ";
 	std::cin >> user;
 	directory = "mkdir " + user;
-	std::cout << "Welcome "+user;
+	std::cout << "\nWelcome "+user;
 	system(directory.c_str());
-	std::cout << "What do you want to do?";
-	std::cout << "1) Make a file.";
-	std::cout << "2) See files.";
-	std::cout << "3) Exit.";
-	std::cout << ">> ";
+	std::cout << "\nWhat do you want to do?";
+	std::cout << "\n1) Make a file.";
+	std::cout << "\n2) See files.";
+	std::cout << "\n3) Exit.";
+	std::cout << "\n>> ";
 	std::cin >> option;
 	switch (option){
 	case 1:{
-		std::string command = "touch "+user+"/file"+std::to_string(filecount);
+		std::string file;
+		std::cout << "\nEnter the file name: ";
+		std::cin >> file;
+		std::string command = "touch "+user+"/"+file;
 		system(command.c_str());
-		filecount++;
 		break;}
 	case 2:{
 		std::string command = "ls "+user;

@@ -1,7 +1,7 @@
 #include <iostream>
 
 int main(){
-    std::string key = "key2389";
+    std::string key = "key123";
     std::string userkey;
     std::cout << "Enter the key: ";
     std::cin >> userkey;

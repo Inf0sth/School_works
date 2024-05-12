@@ -2,5 +2,5 @@
 #include <cstdlib>
 
 int main() {
-    std::string openprograms = " | ";
+    std::string exec = " | ";
 }

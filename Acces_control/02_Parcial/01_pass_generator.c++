@@ -7,6 +7,6 @@ int main(){
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(100, 200);
     int i = dis(gen);
-    keypass = "key"+i;
+    keypass = "key"+std::to_string(i);
     std::cout << keypass;
 }

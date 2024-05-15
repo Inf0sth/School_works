@@ -17,6 +17,7 @@ int main(){
 
     do
     {
+        // Usar new para e implementar listas para cada usuario, inicializando ambos juntos.
         std::cout << "\nUsername: ";
         std:: cin >> username;
 

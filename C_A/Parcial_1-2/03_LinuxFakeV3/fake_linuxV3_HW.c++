@@ -10,7 +10,6 @@ struct Users
 int main(){
     std::list<Users> users;
     Users user;
-    Users file;
     std::string username;
     std::string filename;
     int salir, menu;
@@ -22,6 +21,7 @@ int main(){
         std:: cin >> username;
 
         user.User = username;
+        //user.Files = new file;
         
         do
         {
@@ -30,14 +30,14 @@ int main(){
             switch (menu)
             {
             case 1:
-                for (auto i : file.Files){
+                for (auto i : user.Files){
                     std::cout << i << " - ";
                 }
                 break;
             case 2:
                 std::cout << "\nEnter file name: ";
                 std::cin >> filename;
-                file.Files.push_back(filename);
+                user.Files.push_back(filename);
                 break;
             case 3:
                 break;

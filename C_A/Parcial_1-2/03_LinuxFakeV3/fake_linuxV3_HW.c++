@@ -1,10 +1,15 @@
 #include <iostream>
 #include <list>
 
+
+struct File
+{
+    std::list<std::string> Files;
+};
 struct Users
 {
     std::string User;
-    std::list<std::string> Files;
+    File Files;
 };
 
 int main(){
@@ -21,7 +26,7 @@ int main(){
         std:: cin >> username;
 
         user.User = username;
-        //user.Files = new file;
+        user.Files = File();
         
         do
         {
@@ -30,14 +35,14 @@ int main(){
             switch (menu)
             {
             case 1:
-                for (auto i : user.Files){
+                for (auto i : user.Files.Files){
                     std::cout << i << " - ";
                 }
                 break;
             case 2:
                 std::cout << "\nEnter file name: ";
                 std::cin >> filename;
-                user.Files.push_back(filename);
+                user.Files.Files.push_back(filename);
                 break;
             case 3:
                 break;

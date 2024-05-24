@@ -84,9 +84,12 @@ int main()
     // display list
     for (auto i : users)
     {
-        cout << i.User << " - ";
-
-        // Mostrar todos los archivos
+        cout << i.User << ": ";
+        for (auto j : i.Files)
+        {
+            cout << j << " - ";
+        }
+        cout << endl;
     }
     cout << endl << endl;
 

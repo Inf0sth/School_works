@@ -13,9 +13,35 @@ int main()
     list<Users> users;
     Users user, *localUser;
     int salir, menu, optUser;
-    string username, tmp, user_root;
+    string username, tmp, user_root, file_user;
     ofstream fUser, ofRoot;
     ifstream ifRoot ("root");
+ 
+    if( ifRoot.is_open() ) // existe
+    {
+        // Cargar usuarios
+         while ( getline (ifRoot,user_root) )
+        {
+            cout << "Loading user: " << user_root << '\n';
+            user.User = user_root;
+            user.Files.clear();
+            ifstream ifUser (user_root+".usr");
+            while (getline (ifUser, file_user)) {
+              cout << file_user << " - ";
+              user.Files.push_back(file_user);
+            }
+            cout << endl;
+            users.push_back(user);
+ 
+        }
+        ifRoot.close();
+    }
+    else // No existe
+    {
+        // Crear archivo
+        ofRoot.open ("root");
+        ofRoot.close(); 
+    }
  
     do
     {
@@ -103,7 +129,7 @@ int main()
     {
         cout << "user_: " << i.User << endl;
         ofRoot << i.User << endl;
-        fUser.open(i.User); // Crea Archivo
+        fUser.open(i.User+".usr"); // Crea Archivo
  
         for(auto j : i.Files)
         {

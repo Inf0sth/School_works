@@ -1,7 +1,6 @@
 /**
  * Class: Object oriented programing
  * Poroject: Tasklist
- * Student: Joel Albert Araiza López
  * Languaje: Java
  */
 

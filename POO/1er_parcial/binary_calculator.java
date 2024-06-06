@@ -1,7 +1,6 @@
 /**
  * Class: Object oriented programing
  * Poroject: Binary calculator
- * Student: Joel Albert Araiza López
  * Languaje: Java
  * 
  * Instructions

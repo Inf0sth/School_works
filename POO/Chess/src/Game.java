@@ -1,7 +1,6 @@
 /**
  * Class: Object oriented programing
  * Poroject: Chess game
- * Student: Joel Albert Araiza López
  * Languaje: Java
  * This file is the main code
  */

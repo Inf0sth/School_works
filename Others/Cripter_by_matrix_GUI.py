@@ -1,6 +1,6 @@
 """
 Proyecto: Cifrador y descifrador de palabras
-- Joel Araiza
+By Inf0sth
 
 Conocimiento aplicado:
 Multiplicación de matrices

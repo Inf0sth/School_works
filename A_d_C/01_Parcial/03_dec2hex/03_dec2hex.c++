@@ -1,6 +1,5 @@
 // Code to convert a decimal number to a binary and print it in hexadecimal
 // Class: Archiqteture of computers
-// By Joel López
 // Languaje: C++
 
 #include <iostream>

@@ -3,5 +3,4 @@
 ---
 - [Computer architecture](/A_d_C) 💽 Sebastian Mejía
 - [Access control](/C_A/) 🔒 Sebastian Mejía
-- [Object-oriented programming](/POO) 🚘 Javier Ayala
 - [other subjects](/Others) 👾

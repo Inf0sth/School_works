@@ -1,6 +1,5 @@
 #include <iostream>
 #include <random>
-#include <algorithm>
 using namespace std;
 
 int binary_search(int arr[], int num) {
@@ -55,18 +54,17 @@ int main() {
     see_array(array_int);
     cout << "\nIngrese el numero a buscar en el array de enteros: \n";
     cin >> num_int;
-    pos_int = lineal_search(array_int, num_int);
+    pos_int = binary_search(array_int, num_int);
 
     if (pos_int != -1)
         cout << "Numero encontrado en el indice: " << pos_int << endl;
     else
         cout << "Numero no encontrado en el array de enteros\n";
-    sort(array_random, array_random + 100);
-    cout << "\nArray random ordenado: \n";
+    cout << "\nArray random: \n";
     see_array(array_random);
     cout << "\nIngrese el numero a buscar en el array random: \n";
     cin >> num_random;
-    pos_random = binary_search(array_random, num_random);
+    pos_random = lineal_search(array_random, num_random);
 
     if (pos_random != -1)
         cout << "Numero encontrado en el indice: " << pos_random << endl;

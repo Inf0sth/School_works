@@ -4,6 +4,7 @@
 - [Computer architecture](/A_d_C) 💽 Sebastian Mejía
 - [Access control](/C_A/) 🔒 Sebastian Mejía
 - [Other subjects](/Others) 👾
+- [Rust exersices](/Rust_practice) 🦀
 - [Object Oriented](/OOP) 🚗
 - [Web programing](/Web) 🌐
 - [Algorithm design and analysis](/D_A_A) 📚

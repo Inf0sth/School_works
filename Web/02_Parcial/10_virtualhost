@@ -1,0 +1,25 @@
+# Copiar en el archivo de httpd.conf
+# https://docs.rockylinux.org/es/guides/web/apache-sites-enabled/
+
+<VirtualHost *:80>
+        ServerName www.wiki.com 
+        ServerAdmin username@rockylinux.org
+        DocumentRoot /var/www/sub-domains/com.wiki.www/html
+        DirectoryIndex index.php index.htm index.html
+        #Alias /icons/ /var/www/icons/
+        # ScriptAlias /cgi-bin/ /var/www/sub-domains/com.wiki.www/cgi-bin/
+
+    CustomLog "/var/log/httpd/com.wiki.www-access_log" combined
+    ErrorLog  "/var/log/httpd/com.wiki.www-error_log"
+
+        <Directory /var/www/sub-domains/com.wiki.www/html>
+                Options -ExecCGI -Indexes
+                AllowOverride None
+
+                Order deny,allow
+                Deny from all
+                Allow from all
+
+                Satisfy all
+        </Directory>
+</VirtualHost>

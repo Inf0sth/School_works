@@ -1,0 +1,157 @@
+<html>
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="Free Web tutorials">
+        <meta name="keywords" content="HTML, CSS, JavaScript">
+        <meta name="author" content="John Doe">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Jersey+10&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+            </style>
+
+        <style> /* CSS */
+
+        
+
+            p{
+                font-family: "Ubuntu", sans-serif;
+                font-weight: 400;
+                font-style: normal;
+
+                color:gray;
+                width: 80%;
+                margin: 40px 10%;
+            }
+
+            h1, h2, h3{
+                font-family: "Jersey 10", sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                
+                color: magenta;
+                text-align: center;
+            }
+
+            body{
+                background-color: black;
+            }
+
+           .colorRojo{
+                color: red;
+            }
+
+            #header{
+                text-transform: uppercase;
+                color:aqua;
+            }
+
+            h1{
+                color:yellow;
+            }
+
+            img{
+                width: 80%;
+            }
+
+            iframe{
+                width: 60%;
+            }
+
+            img, iframe{
+                margin: 50px auto;
+                display: block;
+            }
+            button{
+                display: block;
+                margin: 20px auto;
+                padding: 5px;
+                background-color: black;
+                border: 2px purple solid;
+                color: white;
+            }
+
+            body.day{
+                background-color: white;
+            }
+
+            body.night{
+                background-color: black;
+            }
+            
+        </style>
+
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded',
+                function (event){
+                    console.log("exito");
+
+                    setInterval(changeTitle, 3000);
+
+                    const d = new Date(); //fecha completa
+                    let hours = d.getHours(); //Sólo la hora
+
+                    var dia = "";
+                    if (hours >= 6 && hours <= 18)
+                        dia = "day";
+                    else 
+                        dia = "night";
+                    const myElement = document.getElementById("main");
+
+                    main.classList.add(dia);
+
+                });
+
+                var iColor = 0;
+                const colores = ["red", "yellow", "cyan", "magenta"];
+
+                function changeTitle ()
+                {
+                    const myElement = document.getElementById("header");
+
+                    if (iColor >= colores.length){
+                        iColor = 0;
+                    }
+
+                    myElement.style.color = colores[iColor];
+                    iColor++;
+                }
+
+        </script>
+
+    </head>
+
+    <body id="main">
+        <h1 id="header" class="colorRojo">Título</h1>
+        <p>En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor.</p>
+        
+        
+        <button onclick="changeTitle()">RED</button>
+
+        <h2 class="colorRojo">Sub Título</h2>
+
+        <p>Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lantejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda.</p>
+        
+        <p>The CSS <code class="colorRojo">background-color</code> property defines the background color of an element.</p>
+
+        <a href="https://amerike.edu.mx/" target="_blank">
+            Visita Amerike Universidad
+        </a>
+        
+        <br>
+        
+        <a href="https://amerike.edu.mx/" target="_blank">
+            <img src="link.jpg" alt="Previsualización de enlace a amerike.edu.mx" />
+        </a>
+
+        <iframe width="606" height="341" src="https://www.youtube.com/embed/22oxQoEIUuk" title="BLACK MYTH WUKONG Gameplay Walkthrough Part 1 [4K 60FPS PC ULTRA] - No Commentary (FULL GAME)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+
+        </iframe>
+
+        <img src="Fondo.png" alt="Hello Kitty sobre una bicicleta hecha de caramelos" />
+
+    </body>
+
+</html>

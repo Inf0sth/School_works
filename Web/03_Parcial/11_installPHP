@@ -1,0 +1,13 @@
+# https://wiki.crowncloud.net/index.php?How_to_Install_PHP_8_2_in_Rocky_Linux_9
+# https://docs.vultr.com/how-to-install-php-and-php-fpm-on-rocky-linux-9
+
+dnf install epel-release
+dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm
+dnf install dnf-utils
+dnf module reset php
+dnf module install php:remi-8.2
+dnf update
+dnf install php
+php -v
+dnf install -y php-mysqlnd php-pgsql php-redis php-curl php-json php-gd php-xml php-mbstring php-zip
+

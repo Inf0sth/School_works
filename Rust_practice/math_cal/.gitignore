@@ -1,7 +1,0 @@
-*
-
-!.gitignore
-!Cargo.toml
-!src
-!src/*
-!README.md

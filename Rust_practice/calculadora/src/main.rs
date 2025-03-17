@@ -1,28 +1,5 @@
 use std::io;
-
-struct BasicOperation {
-    num1: f32,
-    num2: f32,
-}
-
-impl BasicOperation{
-    fn add(&self) -> f32 {
-        self.num1 + self.num2
-    }
-    fn sub(&self) -> f32 {
-        self.num1 - self.num2
-    }
-    fn mul(&self) -> f32 {
-        self.num1 * self.num2
-    }
-    fn div(&self) -> Option<f32> {
-        if self.num2 == 0.0 {
-            None
-        } else {
-            Some(self.num1 / self.num2)
-        }
-    }
-}
+mod basic_operations;
 
 fn main() {
     let mut input = String::new();
@@ -49,8 +26,8 @@ fn main() {
     };
     input.clear();
 
-    let operation = BasicOperation { num1, num2 };
-
+    let operation = basic_operations::BasicOperation::new(num1, num2);
+    
     println!(
         "\nChoice operation:
         1) Add
@@ -78,4 +55,5 @@ fn main() {
         },
         _ => println!("Invalid option!"),
     };
+    
 }

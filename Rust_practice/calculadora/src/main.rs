@@ -1,20 +1,35 @@
 use std::io;
 
+struct BasicOperation {
+    num1: f32,
+    num2: f32,
+}
+
+impl BasicOperation{
+    fn add(&self) -> f32 {
+        self.num1 + self.num2
+    }
+    fn sub(&self) -> f32 {
+        self.num1 - self.num2
+    }
+    fn mul(&self) -> f32 {
+        self.num1 * self.num2
+    }
+    fn div(&self) -> Option<f32> {
+        if self.num2 == 0.0 {
+            None
+        } else {
+            Some(self.num1 / self.num2)
+        }
+    }
+}
+
 fn main() {
     let mut input = String::new();
+
     println!("\nEnter first value => ");
     io::stdin().read_line(&mut input).expect("Input error");
-    let num1: i64 = match input.trim().parse() {
-        Ok(n) => n,
-        Err(_) => {
-            println!("Invalid number!");
-            return;
-        }
-    };
-    input.clear();
-    println!("\nEnter second value => ");
-    io::stdin().read_line(&mut input).expect("Input error");
-    let num2: i64 = match input.trim().parse() {
+    let num1: f32 = match input.trim().parse() {
         Ok(n) => n,
         Err(_) => {
             println!("Invalid number!");
@@ -23,13 +38,27 @@ fn main() {
     };
     input.clear();
 
+    println!("\nEnter second value => ");
+    io::stdin().read_line(&mut input).expect("Input error");
+    let num2: f32 = match input.trim().parse() {
+        Ok(n) => n,
+        Err(_) => {
+            println!("Invalid number!");
+            return;
+        }
+    };
+    input.clear();
+
+    let operation = BasicOperation { num1, num2 };
+
     println!(
-"\nChoice operation:
-1) Add
-2) Subtract
-3) Multiply
-4) Divide\n>> "
+        "\nChoice operation:
+        1) Add
+        2) Subtract
+        3) Multiply
+        4) Divide\n>> "
     );
+
     io::stdin().read_line(&mut input).expect("Input error");
     let option: u8 = match input.trim().parse() {
         Ok(n) => n,
@@ -38,26 +67,15 @@ fn main() {
             return;
         }
     };
-    let result: i64 = match option {
-        1 => add(num1, num2),
-        2 => sub(num1, num2),
-        3 => mul(num1, num2),
-        4 => {
-            if num2 == 0 {
-                println!("Error: Division by zero is not allowed!");
-                return;
-            }
-            div(num1, num2)
-        }
-        _ => {
-            println!("Invalid option!");
-            return;
-        }
-    };
-    println!("Result: {}", result);
-}
 
-fn add(a: i64, b: i64) -> i64 {a + b}
-fn sub(a: i64, b: i64) -> i64 {a - b}
-fn mul(a: i64, b: i64) -> i64 {a * b}
-fn div(a: i64, b: i64) -> i64 {a / b}
+    match option {
+        1 => println!("Result: {}", operation.add()),
+        2 => println!("Result: {}", operation.sub()),
+        3 => println!("Result: {}", operation.mul()),
+        4 => match operation.div() {
+            Some(result) => println!("Result: {}", result),
+            None => println!("Error: Division by zero is not allowed!"),
+        },
+        _ => println!("Invalid option!"),
+    };
+}
